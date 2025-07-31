@@ -2,7 +2,10 @@ package service
 
 import (
 	"database/sql"
+	"notes_service/internal/auth"
 	"notes_service/internal/notes"
+	"notes_service/pgk/jwt"
+	"notes_service/pgk/validator"
 
 	"github.com/labstack/echo"
 )
@@ -13,17 +16,24 @@ const (
 )
 
 type Service struct {
-	db     *sql.DB
-	logger echo.Logger
+	db        *sql.DB
+	logger    echo.Logger
+	validator *validator.CustomValidator
 
 	notesRepo *notes.Repo
+	authRepo  *auth.Repo
+
+	jwt *jwt.JWT
 }
 
-func NewService(db *sql.DB, logger echo.Logger) *Service {
+func NewService(db *sql.DB, logger echo.Logger, jwtSecret jwt.JWT) *Service {
 	svc := &Service{
-		db:     db,
-		logger: logger,
+		db:        db,
+		logger:    logger,
+		validator: validator.New(),
+		jwt:       &jwtSecret,
 	}
+
 	svc.initRepositories(db)
 
 	return svc
@@ -31,6 +41,7 @@ func NewService(db *sql.DB, logger echo.Logger) *Service {
 
 func (s *Service) initRepositories(db *sql.DB) {
 	s.notesRepo = notes.NewRepo(db)
+	s.authRepo = auth.NewRepo(db)
 }
 
 // a
