@@ -16,7 +16,6 @@ type DB struct {
 	Password string `yaml:"POSTGRES_PASSWORD"`
 	Port     string `yaml:"PORT"`
 	Host     string `yaml:"HOST"`
-	// Добавьте другие поля вашего конфига здесь
 }
 
 // PostgresConnection подключается к базе данных

@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 	"notes_service/pgk/jwt"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -22,7 +23,13 @@ func JWTMiddleware(j *jwt.JWT) echo.MiddlewareFunc {
 				return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token"})
 			}
 
-			c.Set("userID", claims.UserID)
+			// Преобразуем UserID в int
+			userID, err := strconv.Atoi(claims.UserID)
+			if err != nil {
+				return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid user ID in token"})
+			}
+
+			c.Set("userID", userID)
 			return next(c)
 		}
 	}

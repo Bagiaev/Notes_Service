@@ -33,8 +33,6 @@ func main() {
 	api := router.Group("api")
 
 	//прописываем ручки
-	api.GET("/note/:id", svc.GetNoteById)
-
 	api.POST("/register", svc.Register)
 	api.POST("/login", svc.Login)
 
@@ -42,7 +40,13 @@ func main() {
 	protected := api.Group("")
 	protected.Use(middleware.JWTMiddleware(jwtSecret))
 
-	protected.GET("/profile", svc.ProfileHandler)
+	protected.GET("/profile", svc.ProfileHandler) //Профиль
+	//4 пункт
+	protected.POST("/notes", svc.CreateNote)       //Создание заметки
+	protected.GET("/notes", svc.GetUserNotes)      //Получение заметок пользователя
+	protected.GET("/notes/:id", svc.GetNoteById)   //Получение заметки по id и по user_id
+	protected.PUT("/notes/:id", svc.UpdateNote)    //Обновление заметки
+	protected.DELETE("/notes/:id", svc.DeleteNote) //Удаление заметки по id  user_id
 
 	//запуск сервера
 	router.Logger.Fatal(router.Start(":8000"))
