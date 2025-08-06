@@ -3,11 +3,11 @@ package main
 import (
 	"os"
 
+	"notes_service/internal/middleware"
 	"notes_service/internal/service"
-	"notes_service/pgk/jwt"
-	"notes_service/pgk/logs"
-	"notes_service/pgk/middleware"
-	"notes_service/pgk/validator"
+	"notes_service/pkg/jwt"
+	"notes_service/pkg/logs"
+	"notes_service/pkg/validator"
 
 	"github.com/labstack/echo/v4"
 )
@@ -37,7 +37,7 @@ func main() {
 	api.POST("/login", svc.Login)
 
 	//защищеные роуты
-	protected := api.Group("")
+	protected := api.Group("user")
 	protected.Use(middleware.JWTMiddleware(jwtSecret))
 
 	protected.GET("/profile", svc.ProfileHandler) //Профиль

@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"notes_service/internal/auth"
 	"notes_service/internal/notes"
-	"notes_service/pgk/jwt"
-	"notes_service/pgk/validator"
+	"notes_service/pkg/jwt"
+	"notes_service/pkg/validator"
 
 	"github.com/labstack/echo"
 )

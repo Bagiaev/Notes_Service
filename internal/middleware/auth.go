@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"notes_service/pgk/jwt"
+	"notes_service/pkg/jwt"
 	"strconv"
 	"strings"
 

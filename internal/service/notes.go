@@ -10,6 +10,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+var result struct {
+	Quote struct {
+		Body string `json:"body"`
+	} `json:"quote"`
+}
+
 // Получение цитат из сайта
 func (s *Service) getInspirationalQuote() (string, error) {
 	resp, err := http.Get("https://favqs.com/api/qotd")
@@ -21,12 +27,6 @@ func (s *Service) getInspirationalQuote() (string, error) {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
-	}
-
-	var result struct {
-		Quote struct {
-			Body string `json:"body"`
-		} `json:"quote"`
 	}
 
 	if err := json.Unmarshal(body, &result); err != nil {
